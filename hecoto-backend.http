@@ -1,0 +1,6 @@
+@hecoto_backend_HostAddress = http://localhost:5062
+
+GET {{hecoto_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
