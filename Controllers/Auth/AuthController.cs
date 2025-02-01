@@ -89,7 +89,6 @@ namespace hecotoBackend.Controllers
             }
             else
             {
-                // devolver el usuario creado con un estatus 201 y los tokens
                 var token = _authServices.GenerateAccessToken(user);
                 var newRefreshToken = await _authServices.GenerateRefreshToken(user);
                 // responder con la informacino del usuario y los tokens
@@ -121,8 +120,8 @@ namespace hecotoBackend.Controllers
                 return Unauthorized();
             }
 
-            var tokens = await _context.JwtTokens.Where(t => t.UserId == user.Id).ToListAsync();
-            _context.JwtTokens.RemoveRange(tokens);
+            var tokens = await _context.RefreshTokens.Where(t => t.UserId == user.Id).ToListAsync();
+            _context.RefreshTokens.RemoveRange(tokens);
             await _context.SaveChangesAsync();
 
             return NoContent();

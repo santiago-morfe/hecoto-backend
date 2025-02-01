@@ -1,25 +1,29 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace hecotoBackend.Models
 {
     public class UsersModel : BaseModel
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(255)]
         [MinLength(3)]
         [RegularExpression(@"^[a-zA-Z0-9]+$")]
-        public required  string UserName { get; set; }
+        public required string UserName { get; set; }
 
         [Required]
-        public required  string PasswordHash  { get; set;}
+        [MaxLength(255)]
+        public required string PasswordHash { get; set; }
 
         [Required]
         [EmailAddress]
-        public required  string Email { get; set; }
+        [MaxLength(255)]
+        public required string Email { get; set; }
 
-        public JwtTokensModel? Token { get; set; }
+        public ICollection<RefreshTokensModel>? RefreshTokens { get; set; }
     }
 }

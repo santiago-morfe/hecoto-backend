@@ -92,15 +92,15 @@ namespace hecotoBackend.Services
         // Generar un nuevo token de refresco y guardarlo en la base de datos
         public async Task<string> GenerateRefreshToken(UsersModel user)
         {
-            var token = new JwtTokensModel
+            var token = new RefreshTokensModel
             {
                 UserId = user.Id,
                 RefreshToken = Guid.NewGuid().ToString(),
                 Expiration = DateTime.UtcNow.AddDays(_configuration.GetValue<int>("Jwt:RefreshTokenExpirationDays")),
-                IsValidate = true
+                IsValid = true,
             };
 
-            _context.JwtTokens.Add(token);
+            _context.RefreshTokens.Add(token);
             await _context.SaveChangesAsync();
 
             return token.RefreshToken;
@@ -109,10 +109,10 @@ namespace hecotoBackend.Services
         // Validar el token de refresco
         public async Task<UsersModel?> ValidateRefreshToken(string refreshToken)
         {
-            var token = await _context.JwtTokens
+            var token = await _context.RefreshTokens
                 .FirstOrDefaultAsync(t => t.RefreshToken == refreshToken);
 
-            if (token == null || token.Expiration < DateTime.UtcNow || !token.IsValidate)
+            if (token == null || token.Expiration < DateTime.UtcNow || !token.IsValid)
             {
                 return null;
             }
@@ -123,12 +123,12 @@ namespace hecotoBackend.Services
         // Invalidar el token de refresco
         public async Task InvalidateRefreshToken(string refreshToken)
         {
-            var token = await _context.JwtTokens
+            var token = await _context.RefreshTokens
                 .FirstOrDefaultAsync(t => t.RefreshToken == refreshToken);
 
             if (token != null)
             {
-                token.IsValidate = false;
+                token.IsValid = false;
                 await _context.SaveChangesAsync();
             }
         }
