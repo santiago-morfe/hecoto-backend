@@ -1,5 +1,3 @@
-// modelos para la autenticasion y autorizacion 
-
 using System.ComponentModel.DataAnnotations;
 
 namespace hecotoBackend.DTOs

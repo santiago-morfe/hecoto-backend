@@ -25,5 +25,6 @@ namespace hecotoBackend.Models
         public required string Email { get; set; }
 
         public ICollection<RefreshTokensModel>? RefreshTokens { get; set; }
+        public ICollection<MedalsModel>? Medals { get; set; }
     }
 }
